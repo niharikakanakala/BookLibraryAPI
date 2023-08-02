@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "6iwefA1nmER3LlYuTRvkSPJvcqEHbFb/Z448OcUNNIQ=",
+  "Source": "ContactManagementSystem.WebAPI",
+  "BasePath": "_content/ContactManagementSystem.WebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
