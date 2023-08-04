@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ContactManagementSystem.WebAPI\ContactManagementSystem.WebAPI.csproj" />
+    <ProjectReference Include="..\BookLibrary.WebAPI\BookLibrary.WebAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace ContactManagementSystem.WebAPI
+namespace BookLibrary.WebAPI
 {
     public class Program
     {

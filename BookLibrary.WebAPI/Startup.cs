@@ -4,15 +4,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using ContactManagementSystem.WebAPI.Data;
-//using ContactManagementSystem.WebAPI.IServices;
-using ContactManagementSystem.WebAPI.Services;
+using LibraryManagementSystem.WebAPI.Data;
+using LibraryManagementSystem.WebAPI.Services;
 
-namespace ContactManagementSystem.WebAPI
+namespace BookLibrary.WebAPI
 {
     public class Startup
     {
-        public const string DatabaseFileName = "contact_database.db";
+        public const string DatabaseFileName = "library_database.db";
 
         public Startup(IConfiguration configuration)
         {
