@@ -1,15 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using ContactManagementSystem.WebAPI.Models;
+using BookLibrary.WebAPI.Models;
 
-namespace ContactManagementSystem.WebAPI.Data
+namespace BookLibrary.WebAPI.Data
 {
-    public class ContactContext : DbContext
+    public class BookContext : DbContext
     {
-        public ContactContext(DbContextOptions<ContactContext> options) : base(options)
+        public BookContext(DbContextOptions<BookContext> options) : base(options)
         {
         }
 
-        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Book> Books { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,17 +1,15 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-
-namespace ContactManagementSystem.WebAPI.Models
+namespace BookLibrary.WebAPI.Models
 {
-    public class Contact
+    public class Book
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public string Genre { get; set; }
+        public int PublicationYear { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }
