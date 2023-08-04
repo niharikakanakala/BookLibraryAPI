@@ -1,0 +1,6 @@
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.Tests/bin/Debug/net6.0/CoverletSourceRootsMapping
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.Tests/obj/Debug/net6.0/BookLibrary.Tests.csproj.AssemblyReference.cache
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.Tests/obj/Debug/net6.0/BookLibrary.Tests.GeneratedMSBuildEditorConfig.editorconfig
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.Tests/obj/Debug/net6.0/BookLibrary.Tests.AssemblyInfoInputs.cache
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.Tests/obj/Debug/net6.0/BookLibrary.Tests.AssemblyInfo.cs
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.Tests/obj/Debug/net6.0/BookLibrary.Tests.csproj.CoreCompileInputs.cache

@@ -1,4 +1,6 @@
-using FluentAssertions;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
@@ -6,26 +8,23 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Xunit;
+using FluentAssertions;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
-using ContactManagementSystem.WebAPI.Data;
-using ContactManagementSystem.WebAPI.Models;
-using ContactManagementSystem.WebAPI;
-using Xunit;
+using BookLibrary.WebAPI.Data;
+using BookLibrary.WebAPI.Models;
+using BookLibrary.WebAPI;
 
 namespace MainIntegrationTests.Tests
 {
-    public class ContactManagementSystemIntegrationTests
+    public class BookLibraryIntegrationTests
     {
         private TestServer _server;
         private HttpClient _client;
 
-        public ContactManagementSystemIntegrationTests()
+        public BookLibraryIntegrationTests()
         {
             SetUpClient();
         }
@@ -36,12 +35,12 @@ namespace MainIntegrationTests.Tests
                 .UseStartup<Startup>()
                 .ConfigureServices(services =>
                 {
-                    var context = new ContactContext(new DbContextOptionsBuilder<ContactContext>()
+                    var context = new BookContext(new DbContextOptionsBuilder<BookContext>()
                         .UseSqlite("DataSource=:memory:")
                         .EnableSensitiveDataLogging()
                         .Options);
 
-                    services.RemoveAll(typeof(ContactContext));
+                    services.RemoveAll(typeof(BookContext));
                     services.AddSingleton(context);
 
                     context.Database.OpenConnection();
@@ -65,192 +64,184 @@ namespace MainIntegrationTests.Tests
         {
             // Add your integration test scenario here
             // For example:
-            var response = await _client.GetAsync("/api/contacts");
+            var response = await _client.GetAsync("/api/books");
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             var content = await response.Content.ReadAsStringAsync();
-            var contacts = JsonConvert.DeserializeObject<List<Contact>>(content);
-            contacts.Should().NotBeNull();
+            var books = JsonConvert.DeserializeObject<List<Book>>(content);
+            books.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task TestAddContact()
+        public async Task TestAddBook()
         {
-            var newContact = new Contact
+            var newBook = new Book
             {
-                Name = "John Doe",
-                Email = "johndoe@example.com",
-                PhoneNumber = "123-456-7890",
-                Address = "123 Main St",
-                City = "New York",
-                Country = "USA"
+                Title = "Sample Book",
+                Author = "John Doe",
+                Genre = "Fiction",
+                PublicationYear = 2023,
+                IsAvailable = true
             };
 
-            var jsonString = JsonConvert.SerializeObject(newContact);
+            var jsonString = JsonConvert.SerializeObject(newBook);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync("/api/contacts", httpContent);
+            var response = await _client.PostAsync("/api/books", httpContent);
             response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
         [Fact]
-public async Task TestUpdateContact()
-{
-    // Add test data to the database
-    var context = _server.Host.Services.GetRequiredService<ContactContext>();
-    context.Contacts.Add(new Contact
-    {
-        Name = "Test Contact",
-        Email = "test@example.com",
-        PhoneNumber = "123-456-7890",
-        Address = "Test Address",
-        City = "Test City",
-        Country = "Test Country"
-    });
-    context.SaveChanges();
-
-    // Perform the GET request to /api/contacts to get the contact ID
-    var response = await _client.GetAsync("/api/contacts");
-    response.StatusCode.Should().Be(HttpStatusCode.OK);
-    var content = await response.Content.ReadAsStringAsync();
-    var contacts = JsonConvert.DeserializeObject<List<Contact>>(content);
-    contacts.Should().NotBeNull();
-    contacts.Count.Should().Be(1);
-    var contactId = contacts[0].Id;
-
-    // Update the contact
-    var updatedContact = new Contact
-    {
-        Id = contactId,
-        Name = "Updated Contact",
-        Email = "updated@example.com",
-        PhoneNumber = "987-654-3210",
-        Address = "Updated Address", // Fixed the address here
-        City = "Updated City",
-        Country = "Updated Country"
-    };
-    var jsonString = JsonConvert.SerializeObject(updatedContact);
-    var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
-    var updateResponse = await _client.PutAsync($"/api/contacts/{contactId}", httpContent);
-    updateResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
-
-    // Verify the contact was updated
-    var updatedResponse = await _client.GetAsync($"/api/contacts/{contactId}");
-    updatedResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-    var updatedContent = await updatedResponse.Content.ReadAsStringAsync();
-    var updatedContactResult = JsonConvert.DeserializeObject<Contact>(updatedContent);
-    updatedContactResult.Should().NotBeNull();
-    updatedContactResult.Name.Should().Be("Updated Contact");
-    updatedContactResult.Email.Should().Be("updated@example.com");
-    updatedContactResult.PhoneNumber.Should().Be("987-654-3210");
-    updatedContactResult.Address.Should().Be("Updated Address");
-    updatedContactResult.City.Should().Be("Updated City");
-    updatedContactResult.Country.Should().Be("Updated Country");
-}
-
-[Fact]
-public async Task TestGetContactByName()
-{
-    // Add test data to the database
-    var context = _server.Host.Services.GetRequiredService<ContactContext>();
-    var testContact = new Contact
-    {
-        Name = "Test Contact",
-        Email = "test@example.com",
-        PhoneNumber = "123-456-7890",
-        Address = "Test Address",
-        City = "Test City",
-        Country = "Test Country"
-    };
-    context.Contacts.Add(testContact);
-    context.SaveChanges();
-
-    // Perform the GET request to /api/contacts?name={contactName}
-    var response = await _client.GetAsync($"/api/contacts?name={testContact.Name}");
-    response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-    // Deserialize the response content and verify the result
-    var content = await response.Content.ReadAsStringAsync();
-    var contacts = JsonConvert.DeserializeObject<List<Contact>>(content);
-    contacts.Should().NotBeNull();
-    contacts.Count.Should().Be(1);
-
-    var contact = contacts.FirstOrDefault();
-    contact.Should().NotBeNull();
-    contact.Name.Should().Be(testContact.Name);
-    contact.Email.Should().Be(testContact.Email);
-    contact.PhoneNumber.Should().Be(testContact.PhoneNumber);
-    contact.Address.Should().Be(testContact.Address);
-    contact.City.Should().Be(testContact.City);
-    contact.Country.Should().Be(testContact.Country);
-}
-
-
-        [Fact]
-        public async Task TestGetAllContacts()
+        public async Task TestUpdateBook()
         {
             // Add test data to the database
-            var context = _server.Host.Services.GetRequiredService<ContactContext>();
-            context.Contacts.Add(new Contact
+            var context = _server.Host.Services.GetRequiredService<BookContext>();
+            context.Books.Add(new Book
             {
-                Name = "Test Contact",
-                Email = "test@example.com",
-                PhoneNumber = "123-456-7890",
-                Address = "Test Address",
-                City = "Test City",
-                Country = "Test Country"
+                Title = "Test Book",
+                Author = "Test Author",
+                Genre = "Test Genre",
+                PublicationYear = 2022,
+                IsAvailable = true
             });
             context.SaveChanges();
 
-            // Perform the GET request to /api/contacts
-            var response = await _client.GetAsync("/api/contacts");
+            // Perform the GET request to /api/books to get the book ID
+            var response = await _client.GetAsync("/api/books");
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var content = await response.Content.ReadAsStringAsync();
+            var books = JsonConvert.DeserializeObject<List<Book>>(content);
+            books.Should().NotBeNull();
+            books.Count.Should().Be(1);
+            var bookId = books[0].Id;
+
+            // Update the book
+            var updatedBook = new Book
+            {
+                Id = bookId,
+                Title = "Updated Book",
+                Author = "Updated Author",
+                Genre = "Updated Genre",
+                PublicationYear = 2023,
+                IsAvailable = false
+            };
+            var jsonString = JsonConvert.SerializeObject(updatedBook);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            var updateResponse = await _client.PutAsync($"/api/books/{bookId}", httpContent);
+            updateResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+            // Verify the book was updated
+            var updatedResponse = await _client.GetAsync($"/api/books/{bookId}");
+            updatedResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            var updatedContent = await updatedResponse.Content.ReadAsStringAsync();
+            var updatedBookResult = JsonConvert.DeserializeObject<Book>(updatedContent);
+            updatedBookResult.Should().NotBeNull();
+            updatedBookResult.Title.Should().Be("Updated Book");
+            updatedBookResult.Author.Should().Be("Updated Author");
+            updatedBookResult.Genre.Should().Be("Updated Genre");
+            updatedBookResult.PublicationYear.Should().Be(2023);
+            updatedBookResult.IsAvailable.Should().Be(false);
+        }
+
+        [Fact]
+        public async Task TestGetBookByTitle()
+        {
+            // Add test data to the database
+            var context = _server.Host.Services.GetRequiredService<BookContext>();
+            var testBook = new Book
+            {
+                Title = "Test Book",
+                Author = "Test Author",
+                Genre = "Test Genre",
+                PublicationYear = 2022,
+                IsAvailable = true
+            };
+            context.Books.Add(testBook);
+            context.SaveChanges();
+
+            // Perform the GET request to /api/books?title={bookTitle}
+            var response = await _client.GetAsync($"/api/books?title={testBook.Title}");
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            // Deserialize the response content and verify the result
+            var content = await response.Content.ReadAsStringAsync();
+            var books = JsonConvert.DeserializeObject<List<Book>>(content);
+            books.Should().NotBeNull();
+            books.Count.Should().Be(1);
+
+            var book = books.FirstOrDefault();
+            book.Should().NotBeNull();
+            book.Title.Should().Be(testBook.Title);
+            book.Author.Should().Be(testBook.Author);
+            book.Genre.Should().Be(testBook.Genre);
+            book.PublicationYear.Should().Be(testBook.PublicationYear);
+            book.IsAvailable.Should().Be(testBook.IsAvailable);
+        }
+
+        [Fact]
+        public async Task TestGetAllBooks()
+        {
+            // Add test data to the database
+            var context = _server.Host.Services.GetRequiredService<BookContext>();
+            context.Books.Add(new Book
+            {
+                Title = "Test Book",
+                Author = "Test Author",
+                Genre = "Test Genre",
+                PublicationYear = 2022,
+                IsAvailable = true
+            });
+            context.SaveChanges();
+
+            // Perform the GET request to /api/books
+            var response = await _client.GetAsync("/api/books");
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             // Deserialize the response content and verify the results
             var content = await response.Content.ReadAsStringAsync();
-            var contacts = JsonConvert.DeserializeObject<List<Contact>>(content);
-            contacts.Should().NotBeNull();
-            contacts.Count.Should().Be(1);
+            var books = JsonConvert.DeserializeObject<List<Book>>(content);
+            books.Should().NotBeNull();
+            books.Count.Should().Be(1);
 
-            var testContact = contacts.FirstOrDefault();
-            testContact.Should().NotBeNull();
-            testContact.Name.Should().Be("Test Contact");
-            testContact.Email.Should().Be("test@example.com");
-            testContact.PhoneNumber.Should().Be("123-456-7890");
+            var testBook = books.FirstOrDefault();
+            testBook.Should().NotBeNull();
+            testBook.Title.Should().Be("Test Book");
+            testBook.Author.Should().Be("Test Author");
+            testBook.Genre.Should().Be("Test Genre");
+            testBook.PublicationYear.Should().Be(2022);
+            testBook.IsAvailable.Should().Be(true);
         }
-        
-    
+
         [Fact]
-        public async Task TestDeleteContact()
+        public async Task TestDeleteBook()
         {
             // Add test data to the database
-            var context = _server.Host.Services.GetRequiredService<ContactContext>();
-            context.Contacts.Add(new Contact
+            var context = _server.Host.Services.GetRequiredService<BookContext>();
+            context.Books.Add(new Book
             {
-                Name = "Test Contact",
-                Email = "test@example.com",
-                PhoneNumber = "123-456-7890",
-                Address = "Test Address",
-                City = "Test City",
-                Country = "Test Country"
+                Title = "Test Book",
+                Author = "Test Author",
+                Genre = "Test Genre",
+                PublicationYear = 2022,
+                IsAvailable = true
             });
             context.SaveChanges();
 
-            // Perform the GET request to /api/contacts to get the contact ID
-            var response = await _client.GetAsync("/api/contacts");
+            // Perform the GET request to /api/books to get the book ID
+            var response = await _client.GetAsync("/api/books");
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var content = await response.Content.ReadAsStringAsync();
-            var contacts = JsonConvert.DeserializeObject<List<Contact>>(content);
-            contacts.Should().NotBeNull();
-            contacts.Count.Should().Be(1);
-            var contactId = contacts[0].Id;
+            var books = JsonConvert.DeserializeObject<List<Book>>(content);
+            books.Should().NotBeNull();
+            books.Count.Should().Be(1);
+            var bookId = books[0].Id;
 
-            // Delete the contact
-            var deleteResponse = await _client.DeleteAsync($"/api/contacts/{contactId}");
+            // Delete the book
+            var deleteResponse = await _client.DeleteAsync($"/api/books/{bookId}");
             deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-            // Verify the contact was deleted
-            var deletedResponse = await _client.GetAsync($"/api/contacts/{contactId}");
+            // Verify the book was deleted
+            var deletedResponse = await _client.GetAsync($"/api/books/{bookId}");
             deletedResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
     }

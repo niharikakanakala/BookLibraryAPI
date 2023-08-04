@@ -4,8 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using LibraryManagementSystem.WebAPI.Data;
-using LibraryManagementSystem.WebAPI.Services;
+using BookLibrary.WebAPI.Data;
+using BookLibrary.WebAPI.Services;
 
 namespace BookLibrary.WebAPI
 {
@@ -22,8 +22,8 @@ namespace BookLibrary.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ContactContext>(options => options.UseLazyLoadingProxies().UseSqlite($"Data Source={DatabaseFileName}"));
-            services.AddTransient<IContactService, ContactService>();
+            services.AddDbContext<BookContext>(options => options.UseLazyLoadingProxies().UseSqlite($"Data Source={DatabaseFileName}"));
+            services.AddTransient<IBookService, BookService>();
             services.AddControllers();
         }
 
