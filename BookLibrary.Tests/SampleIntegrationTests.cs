@@ -130,7 +130,45 @@ namespace SampleIntegrationTests.Tests
             books.Count.Should().Be(0);
         }
 
-        // Add more test methods for other book-related endpoints
-        // For example, TestAddBook, TestUpdateBook, TestGetAllBooks, etc.
+
+        [Fact]
+        public async Task TestSortBooksByPropertyAscending()
+        {
+            var books = new List<Book>
+            {
+                new Book { Title = "Book C", Author = "Author C", Genre = "Genre C", PublicationYear = 2020, IsAvailable = true },
+                new Book { Title = "Book A", Author = "Author A", Genre = "Genre A", PublicationYear = 2019, IsAvailable = true },
+                new Book { Title = "Book B", Author = "Author B", Genre = "Genre B", PublicationYear = 2021, IsAvailable = false }
+            };
+
+            await AddBooksToDatabase(books);
+
+            await TestSortBooks("/api/books/sort?sortBy=title&sortOrder=asc", b => b.Title);
+            await TestSortBooks("/api/books/sort?sortBy=author&sortOrder=asc", b => b.Author);
+            await TestSortBooks("/api/books/sort?sortBy=genre&sortOrder=asc", b => b.Genre);
+            await TestSortBooks("/api/books/sort?sortBy=publicationyear&sortOrder=asc", b => b.PublicationYear);
+        }
+
+        private async Task AddBooksToDatabase(List<Book> books)
+        {
+            var context = _server.Host.Services.GetRequiredService<BookContext>();
+            context.Books.AddRange(books);
+            await context.SaveChangesAsync();
+        }
+
+        private async Task TestSortBooks(string url, Func<Book, object> propertySelector)
+        {
+            var response = await _client.GetAsync(url);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            var content = await response.Content.ReadAsStringAsync();
+            var sortedBooks = JsonConvert.DeserializeObject<List<Book>>(content);
+            sortedBooks.Should().NotBeNull();
+            sortedBooks.Count.Should().Be(3);
+
+            var expectedSortedBooks = sortedBooks.OrderBy(propertySelector).ToList();
+            sortedBooks.Should().BeEquivalentTo(expectedSortedBooks);
+        }
+
     }
 }
