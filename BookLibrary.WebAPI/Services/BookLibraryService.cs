@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using BookLibrary.WebAPI.Data;
 using BookLibrary.WebAPI.Models;
-using BookLibrary.WebAPI.Services;
 
 namespace BookLibrary.WebAPI.Services
 {
@@ -68,6 +67,36 @@ namespace BookLibrary.WebAPI.Services
         {
             return await _bookContext.Books
                 .FirstOrDefaultAsync(b => b.Title == title);
+        }
+
+        public async Task<List<Book>> SortBooksByTitle(string sortOrder)
+        {
+            var books = await _bookContext.Books.ToListAsync();
+            return sortOrder.ToLower() == "desc" ? books.OrderByDescending(b => b.Title).ToList() : books.OrderBy(b => b.Title).ToList();
+        }
+
+        public async Task<List<Book>> SortBooksByAuthor(string sortOrder)
+        {
+            var books = await _bookContext.Books.ToListAsync();
+            return sortOrder.ToLower() == "desc" ? books.OrderByDescending(b => b.Author).ToList() : books.OrderBy(b => b.Author).ToList();
+        }
+
+        public async Task<List<Book>> SortBooksByGenre(string sortOrder)
+        {
+            var books = await _bookContext.Books.ToListAsync();
+            return sortOrder.ToLower() == "desc" ? books.OrderByDescending(b => b.Genre).ToList() : books.OrderBy(b => b.Genre).ToList();
+        }
+
+        public async Task<List<Book>> SortBooksByPublicationYear(string sortOrder)
+        {
+            var books = await _bookContext.Books.ToListAsync();
+            return sortOrder.ToLower() == "desc" ? books.OrderByDescending(b => b.PublicationYear).ToList() : books.OrderBy(b => b.PublicationYear).ToList();
+        }
+
+        public async Task<List<Book>> SortBooksByAvailability(string sortOrder)
+        {
+            var books = await _bookContext.Books.ToListAsync();
+            return sortOrder.ToLower() == "desc" ? books.OrderByDescending(b => b.IsAvailable).ToList() : books.OrderBy(b => b.IsAvailable).ToList();
         }
     }
 }

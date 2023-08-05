@@ -1,10 +1,3 @@
-/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.csproj.AssemblyReference.cache
-/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
-/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.AssemblyInfoInputs.cache
-/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.AssemblyInfo.cs
-/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.csproj.CoreCompileInputs.cache
-/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.MvcApplicationPartsAssemblyInfo.cs
-/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.MvcApplicationPartsAssemblyInfo.cache
 /home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/bin/Debug/net6.0/Microsoft.VisualStudio.TestPlatform.Extension.JUnit.Xml.TestLogger.dll
 /home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/bin/Debug/net6.0/Microsoft.VisualStudio.TestPlatform.Extension.JUnit.Xml.TestAdapter.dll
 /home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/bin/Debug/net6.0/Spekt.TestLogger.dll
@@ -84,6 +77,13 @@
 /home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/bin/Debug/net6.0/runtimes/win/lib/netstandard2.0/System.Runtime.Caching.dll
 /home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/bin/Debug/net6.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
 /home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/bin/Debug/net6.0/runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.csproj.AssemblyReference.cache
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.AssemblyInfoInputs.cache
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.AssemblyInfo.cs
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.csproj.CoreCompileInputs.cache
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+/home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/BookLibrary.WebAPI.MvcApplicationPartsAssemblyInfo.cache
 /home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/staticwebassets.build.json
 /home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/staticwebassets.development.json
 /home/hackerearth/Downloads/contacts/LibraryManagament/netcore-library/BookLibrary.WebAPI/obj/Debug/net6.0/scopedcss/bundle/BookLibrary.WebAPI.styles.css

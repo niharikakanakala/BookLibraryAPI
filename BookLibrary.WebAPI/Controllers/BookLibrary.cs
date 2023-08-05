@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using BookLibrary.WebAPI.Data;
 using BookLibrary.WebAPI.Models;
 using BookLibrary.WebAPI.Services;
 
@@ -96,5 +95,37 @@ namespace BookLibrary.WebAPI.Controllers
             await _bookService.DeleteAllBooks();
             return NoContent();
         }
+
+        [HttpGet("sort")]
+public async Task<ActionResult<List<Book>>> SortBooks([FromQuery] string sortBy, [FromQuery] string sortOrder = "asc")
+{
+    List<Book> sortedBooks;
+
+    switch (sortBy.ToLower())
+    {
+        case "title":
+            sortedBooks = await _bookService.SortBooksByTitle(sortOrder);
+            break;
+        case "author":
+            sortedBooks = await _bookService.SortBooksByAuthor(sortOrder);
+            break;
+        case "genre":
+            sortedBooks = await _bookService.SortBooksByGenre(sortOrder);
+            break;
+        case "publicationyear":
+            sortedBooks = await _bookService.SortBooksByPublicationYear(sortOrder);
+            break;
+        case "isavailable":
+            sortedBooks = await _bookService.SortBooksByAvailability(sortOrder);
+            break;
+        default:
+            return BadRequest("Invalid sort property. Allowed properties are: title, author, genre, publicationYear, isAvailable.");
+    }
+
+    return Ok(sortedBooks);
+}
+
+
+        
     }
 }
